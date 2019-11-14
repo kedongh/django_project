@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>User login</title>
+	<style>
+		#main{
+			float: right;
+			text-align: center;
+			font-size:20px;
+		}
+		#slogan{
+    		margin:0px auto;
+    		width:500px; 
+    		height:300px;
+    		text-align: center;
+    		font-size: 50px;
+    		/*background-color: red;*/
+		}
+		#info{
+			margin: 0px auto
+			width:300px;
+			height:100px;
+			text-align: center;
+			font-size: 32px;
+		}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<a href="{% url 'welcome' %}">Back to main page</a>
+	</div>
+	<div id="slogan">
+		myUber user's login!
+		<div>
+			<img src="{% static "car.png" %}" height="200" width="300">
+		</div>
+	</div>
+	<div id="info">
+	<form action="{% url 'ucheck' %}" method="post">
+	<!--<form>-->
+		{% csrf_token %}
+		<div>
+			<label for="username">Username:</label>
+			<input id="username" type="text" name="username" placeholder="Cheng Zhang" required>
+		</div>
+
+		<div>
+			<label for="password">Password:</label>
+			<input id="password" type="password" name="password" placeholder="password" pattern=".{5,10}" required title="5 to 10 characters!">
+		</div>
+		<button style="width:150px;height:30px">Log In</button>
+		<div style="font-size: 15px">{{ error_message }}</div>
+		<a href = "{% url 'usignup' %}">
+			<h6>Don't have a account, create one</h6>
+		</a>
+	</form>
+	</div>
+</body>
+</html>

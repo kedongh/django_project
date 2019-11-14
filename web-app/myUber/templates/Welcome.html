@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>myUber</title>
+	<style>
+		#slogan{
+    		margin:0px auto;
+    		width:500px; 
+    		height:300px;
+    		text-align: center;
+    		font-size: 50px;
+    		/*background-color: red;*/
+		}
+		#info{
+			margin: 0px auto
+			width:300px;
+			height:100px;
+			text-align: center;
+			font-size: 32px;
+		}
+	</style>
+</head>
+<body>
+	<div id="slogan">
+		Welcome to myUber!
+		<div>
+			<img src="{% static "car.png" %}" height="200" width="300">
+		</div>
+	</div>
+	<div id="info">
+	<form action = "{% url 'ulogin' %}", method = "get">
+		<button style="width:150px;height:30px">User</button>
+	</form>
+
+	<form action = "{% url 'dlogin' %}", method = "get">
+		<button style="width:150px;height:30px">Driver</button>
+	</form>
+	</div>
+</body>
+</html>

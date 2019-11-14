@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Edit your info</title>
+	<style>
+		#main{
+			float: right;
+			text-align: center;
+			font-size:20px;
+		}
+		#slogan{
+    		margin:0px auto;
+    		width:500px; 
+    		height:300px;
+    		text-align: center;
+    		font-size: 50px;
+    		/*background-color: red;*/
+		}
+		#info{
+			margin: 0px auto
+			width:300px;
+			height:100px;
+			text-align: center;
+			font-size: 32px;
+		}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<div>
+			<a href="{% url 'driver' username %}">Back to search page</a>
+		</div>
+	</div>
+	<div id="slogan">
+		myUber
+		<div>
+			<img src="{% static "car.png" %}" height="200" width="300">
+		</div>
+	</div>
+	<div id="info">
+	<form action="{% url 'dupdate' username %}" method="post">
+		{% csrf_token %}
+		<div>
+			<h3> New information </h3>
+		<div>
+			<label for="name">Real name:</label>
+			<input id="name" type="text" name="name" placeholder="Kyrie Irving" >
+		</div>
+		<div>
+			<label for="type">Vehicle type:</label>
+			<input id="type" type="text" name="type" >
+		</div>
+		<div>
+			<label for="license">License number:</label>
+			<input id="license" type="text" name="license">
+		</div>
+		<div>
+			<label for="accomodation">Car space:</label>
+			<input id="accomodation" type="number" name="space" placeholder="numbers" min="1" oninvalid="alert('number must be positive integer')">
+		</div>
+		<div>
+			Special info:
+			<select name="special">
+				<option>None</option>
+				<option>Infant care</option>
+				<option>Disabled Equipment</option>
+				<option>Allow food or water</option>
+			</select>
+		</div>
+		<button style="width:150px;height:30px;">Edit</button>
+		</div>
+	</form>
+		<div style="font-size: 15px">{{message}}</div>
+	</div>
+</body>
+</html>

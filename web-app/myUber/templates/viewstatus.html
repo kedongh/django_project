@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<script type='text/javascript' src="{% static 'jquery-3.3.1.min.js' %}"></script>
+	<title>ViewStatus</title>
+	<style>
+		#welcome{
+			float: right;
+			text-align: center;
+			font-size:20px;
+		}
+		#slogan{
+    		margin:0px auto;
+    		width:700px; 
+    		height:300px;
+    		text-align: center;
+    		font-size: 50px;
+    		/*background-color: red;*/
+		}
+		#t{
+			margin: 0px auto;
+			width:500px;
+			height:300px;
+			text-align: center;
+			font-size: 15px;
+		}
+	</style>
+
+</head>
+<body>
+<script>$.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}});</script>
+<script type="text/javascript">
+		function check(){
+		    	var id = document.getElementById("ID").innerHTML;
+		    	if(id=="") {return true;}
+		    	else{
+                    $.ajax({
+                        type: 'POST',
+                        data: {ID: id},
+                        url: "{% url 'query' %}",
+                        dataType: "json",
+                        success: function (result) {
+                            var obj = result.rows;
+                            console.log("Success!");
+                            if (obj == "C") {
+                                window.location.replace("{% url 'user' username %}");
+                            }
+                        },
+                        error: function () {
+                            console.log("False");
+                        }
+                    });
+                }
+		};
+		$(document).ready(
+		    setInterval(check,1000)
+		);
+	</script>
+	<div id="welcome">
+		Hi~, user {{username}}
+		<a href="{% url 'ulogin' %}">log out</a>
+		<p></p>
+		<div>
+		<a href="{% url 'utable' username %}">View your all uncompleted ride</a>
+		</div>
+		<p></p>
+		<div>
+			<a href="{% url 'user' username %}">Back to search page</a>
+		</div>
+	</div>
+	<div id="slogan">
+		myUber
+		<div>
+			<img src="{% static "car.png" %}" height="200" width="300">
+		</div>
+	</div>
+	<div style="font-size: 20px;text-align:center">Your Ride Info</div>
+	<p></p>
+	<div id="t">
+	<form id="query" action = "{% url 'uchange' username r.id %}" method="post">
+		{% csrf_token %}
+		<table id="table" border="1">
+			<thead>
+				<tr>
+					<th>Ride ID</th>
+					<th>Destination</th>
+					<th>Arrive Time</th>
+					<th>Driver</th>
+					<th>Owner</th>
+					<th>Sharer</th>
+					<th>Number of owner party</th>
+					<th>Number of sharer party</th>
+					<th>Status</th>
+					<th>Vehicle type</th>
+				</tr>
+			</thead>
+			<tbody id="tbody">
+					<tr>
+						<td id="ID">{{r.id}}</td>
+						<td>{{r.dest}}</td>
+						<td>{{r.arrive_t}}</td>
+						<td id="driver">{{r.driver}}</td>
+						<td>{{r.owner}}</td>
+						<td id="sharer">{{r.sharer}}</td>
+						<td id="number">{{r.number}}</td>
+						<td>{{r.s_num}}</td>
+						<td id="status">{{r.status}}</td>
+						<td id="type">{{r.v_type}}</td>
+					</tr>
+			</tbody>
+		</table>
+	</form>
+	</div>
+</body>
+</html>

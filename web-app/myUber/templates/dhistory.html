@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>history</title>
+	<style>
+		#welcome{
+			float: right;
+			text-align: center;
+			font-size:20px;
+		}
+		#slogan{
+    		margin:0px auto;
+    		width:700px; 
+    		height:300px;
+    		text-align: center;
+    		font-size: 50px;
+    		/*background-color: red;*/
+		}
+		#table{
+			margin: 0px auto;
+			width:500px;
+			height:300px;
+			text-align: center;
+			font-size: 15px;
+		}
+	</style>
+</head>
+<body>
+	<div id="welcome">
+		Hi~, user {{username}}
+		<a href="{% url 'ulogin' %}">log out</a>
+		<p></p>
+		<div>
+			<a href="{% url 'driver' username %}">Back to search page</a>
+		</div>
+	</div>
+	<div id="slogan">
+		myUber
+		<div>
+			<img src="{% static "car.png" %}" height="200" width="300">
+		</div>
+	</div>
+	<div id="table">
+	<form action="{% url 'dretreive' username %}" method="post">
+		{% csrf_token %}
+		<table border="1">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Destination</th>
+					<th>Arrive Time</th>
+					<th>Driver</th>
+					<th>Owner</th>
+					<th>Number of passengers</th>
+					<th>Status</th>
+					<th>Vehicle type</th>
+					<th>Special_Info</th>
+					<th>Choice</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for r in list %}
+					<tr>
+						<td>{{r.id}}</td>
+						<td>{{r.dest}}</td>
+						<td>{{r.arrive_t}}</td>
+						<td>{{r.driver}}</td>
+						<td>{{r.owner}}</td>
+						<td>{{r.number}}</td>
+						<td>{{r.status}}</td>
+						<td>{{r.v_type}}</td>
+						<td>{{r.special}}</td>
+						<td><input type="radio" name="choice", value={{r.id}}></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% if list %}
+			<button style="width:150px;height:30px;">Select</button>
+		{% endif %}
+	</form>
+	</div>
+</body>
+</html>

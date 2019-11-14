@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<script type='text/javascript' src="{% static 'jquery-3.3.1.min.js' %}"></script>
+	<title>Sharer Edit</title>
+	<style>
+		#welcome{
+			float: right;
+			text-align: center;
+			font-size:20px;
+		}
+		#slogan{
+    		margin:0px auto;
+    		width:700px; 
+    		height:300px;
+    		text-align: center;
+    		font-size: 50px;
+    		/*background-color: red;*/
+		}
+		#table{
+			margin: 0px auto;
+			width:500px;
+			height:300px;
+			text-align: center;
+			font-size: 15px;
+		}
+	</style>
+</head>
+<body>
+<script>$.ajaxSetup({headers: {"X-CSRFToken": '{{ csrf_token }}'}});</script>
+<script type="text/javascript">
+		function check(){
+		    	var id = document.getElementById("ID").innerHTML;
+		    	if(id=="") {return true;}
+		    	else{
+                    $.ajax({
+                        type: 'POST',
+                        data: {ID: id},
+                        url: "{% url 'query' %}",
+                        dataType: "json",
+                        success: function (result) {
+                            var obj = result.rows;
+                            console.log("Success!");
+                            if (obj == "D") {
+                                window.location.replace("{% url 'uview' username r.id %}");
+                            }
+                        },
+                        error: function () {
+                            console.log("False");
+                        }
+                    });
+                }
+		};
+		$(document).ready(
+		    setInterval(check,1000)
+		);
+</script>
+	<div id="welcome">
+		Hi~, user {{username}}
+		<a href="{% url 'ulogin' %}">log out</a>
+		<p></p>
+		<div>
+		<a href="{% url 'utable' username %}">View your all unconfirmed ride</a>
+		</div>
+		<p></p>
+		<div>
+			<a href="{% url 'user' username %}">Back to search page</a>
+		</div>
+	</div>
+	<div id="slogan">
+		myUber
+		<div>
+			<img src="{% static "car.png" %}" height="200" width="300">
+		</div>
+	</div>
+	<div style="font-size: 20px;text-align:center">Wait drivers to respond, you can edit your ride before it is confirmed</div>
+	<p></p>
+	<div id="table">
+	<form action="{% url 'scancel' username %}" method="get">
+		{% csrf_token %}
+		<table border="1">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Destination</th>
+					<th>Arrive Time</th>
+					<th>Driver</th>
+					<th>Owner</th>
+					<th>Number of passengers</th>
+					<th>Vehicle type</th>
+				</tr>
+			</thead>
+			<tbody>
+					<tr>
+						<td id="ID">{{r.id}}</td>
+						<td>{{r.dest}}</td>
+						<td>{{r.arrive_t}}</td>
+						<td>{{r.driver}}</td>
+						<td>{{r.owner}}</td>
+						<td>{{r.number}}</td>
+						<td>{{r.v_type}}</td>
+					</tr>
+			</tbody>
+		</table>
+		<button style="width:150px;height:30px;">Cancel</button>
+		<div>{{error}}</div>
+	</form>
+	</div>
+</body>
+</html>

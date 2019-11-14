@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<title>Sign up driver</title>
+	<style>
+		#main{
+			float: right;
+			text-align: center;
+			font-size:20px;
+		}
+		#slogan{
+    		margin:0px auto;
+    		width:500px; 
+    		height:300px;
+    		text-align: center;
+    		font-size: 50px;
+    		/*background-color: red;*/
+		}
+		#info{
+			margin: 0px auto
+			width:300px;
+			height:100px;
+			text-align: center;
+			font-size: 32px;
+		}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<a href="{% url 'welcome' %}">Back to main page</a>
+	</div>
+	<div id="slogan">
+		myUber
+		<div>
+			<img src="{% static "car.png" %}" height="200" width="300">
+		</div>
+	</div>
+	<div id="info">
+	<form action="{% url 'dcreate' %}" method="post">
+		{% csrf_token %}
+		<div>
+			<h3> Drive Registration </h3>
+			<label for="username">Username:</label>
+			<input id="username" type="text" name="username" required>
+		</div>
+		<div>
+			<label for="password">Password:</label>
+			<input id="password" type="password" name="password" placeholder="5 to 10 characters!" pattern=".{5,10}" required title="5 to 10 characters!">
+		</div>
+		<div>
+			<label for="name">Real name:</label>
+			<input id="name" type="text" name="name" placeholder="Kyrie Irving" required>
+		</div>
+		<div>
+			<label for="type">Vehicle type:</label>
+			<input id="type" type="text" name="type" required>
+		</div>
+		<div>
+			<label for="license">License number:</label>
+			<input id="license" type="text" name="license" required>
+		</div>
+		<div>
+			<label for="accomodation">Car space:</label>
+			<input id="accomodation" type="number" name="space" placeholder="numbers" min="1" oninvalid="alert('number must be positive integer')" required>
+		</div>
+		<div>
+			Special info:
+			<select name="special">
+				<option>None</option>
+				<option>Infant care</option>
+				<option>Disabled Equipment</option>
+				<option>Allow food or water</option>
+			</select>
+		</div>
+		<button style="width:150px;height:30px;">Sign Up</button>
+		<div style="font-size: 15px">{{ error_message }}</div>
+		{% if error_message2 %}
+			<div style="font-size: 15px">{{ error_message2 }}
+				<a href="{% url 'usignup' %}" style="font-size: 15px">clik here to create an account</a>
+			</div>
+		{% endif %}
+	</form>
+	</div>
+</body>
+</html>
